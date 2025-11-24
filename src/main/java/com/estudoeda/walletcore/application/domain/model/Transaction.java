@@ -1,47 +1,23 @@
 package com.estudoeda.walletcore.application.domain.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.Instant;
 import java.util.UUID;
 
-@Entity
-@Table(name = "transactions")
-@EntityListeners(AuditingEntityListener.class)
 @SuppressWarnings("PMD.DataClass")
 public class Transaction {
 
-    @Id
-    @Column(name = "id", nullable = false, updatable = false, columnDefinition = "UUID")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_from_id", nullable = false)
     private Account accountFrom;
 
-    @Column(name = "account_from_id", nullable = false, insertable = false, updatable = false)
     private UUID accountFromId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_to_id", nullable = false)
     private Account accountTo;
 
-    @Column(name = "account_to_id", nullable = false, insertable = false, updatable = false)
     private UUID accountToId;
 
-    @Column(name = "amount", nullable = false)
     private double amount;
 
-    @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
     protected Transaction() {
