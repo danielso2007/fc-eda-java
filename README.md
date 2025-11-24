@@ -7,13 +7,33 @@ Projeto para estudo da arquitetura orientada a eventos.
 Para acessar os containers:
 
 - PgAdmin4
-  - http://172.28.1.12/login
+  - http://localhost:1580/login
 - UI for Apache Kafka
-  - http://172.28.0.20:8080/
+  - http://localhost:8092/
 - Prometheus
-  - http://172.28.2.12:9090/
+  - http://localhost:9090/
+- keycloak
+  - http://localhost:9091/
+- Swagger da aplicação
+  - http://localhost:3003/swagger-ui/swagger-ui/index.html#/
+
+---
+
+Conteúdo abaixo é para o desensolvedor
 
 # Para uso no desenvolvimento
+
+## keycloak
+
+Para obter o token no keycloak, use o cUrl abaixo:
+
+```shell
+curl -X POST "http://localhost:9091/realms/wallet-realm/protocol/openid-connect/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=client_credentials" \
+  -d "client_id=wallet-client" \
+  -d "client_secret=wallet-secret"
+```
 
 ## Padrão de commits
 

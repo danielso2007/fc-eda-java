@@ -1,22 +1,16 @@
-version: "3.9"
-
 services:
 
-  # Kafka em modo KRaft (broker + controller).
   kafka:
     image: confluentinc/cp-kafka:8.1.0
     container_name: kafka
     hostname: kafka
     restart: no
     environment:
-      # DOCUMENTAÇÃO:
-      # Confluent Kafka Environment Variables:
-      # "Confluent Platform → cp-kafka → Configuration Reference"
       KAFKA_PROCESS_ROLES: broker,controller        # Define os papéis no modo KRaft
       KAFKA_NODE_ID: 1                              # ID único do nó no cluster KRaft
       KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093" # Nó responsável pelo quorum KRaft
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092 # Endereço divulgado para clientes
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092 # Endereço divulgado para clientes
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1     # Replicação mínima (dev)
@@ -28,9 +22,8 @@ services:
       - kafka-data:/var/lib/kafka/data
     networks:
       messageBroker:
-        ipv4_address: 172.28.0.10
     healthcheck:
-      test: ["CMD", "bash", "-c", "echo > /dev/tcp/172.28.0.10/9092"]
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/kafka/9092"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -42,21 +35,18 @@ services:
     hostname: kafka-ui
     restart: no
     environment:
-      # DOCUMENTAÇÃO:
-      # Kafka UI → Configuration
-      KAFKA_CLUSTERS_0_NAME: "local-kafka"          # Nome do cluster exibido no UI
+      KAFKA_CLUSTERS_0_NAME: "local-kafka"            # Nome do cluster exibido no UI
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:9092" # Bootstrap para conexão com Kafka
-      KAFKA_CLUSTERS_0_ZOOKEEPER: ""               # Vazio pois usamos KRaft (sem ZK)
-      SERVER_PORT: "8080"                          # Porta interna do serviço
+      KAFKA_CLUSTERS_0_ZOOKEEPER: ""                  # Vazio pois usamos KRaft (sem ZK)
+      SERVER_PORT: "8080"                             # Porta interna do serviço
     ports:
-      - "8080:8080"
+      - "8092:8080"
     networks:
       messageBroker:
-        ipv4_address: 172.28.0.20
     depends_on:
       - kafka
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://172.28.0.20:8080/ || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://kafka-ui:8080/ || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -68,8 +58,6 @@ services:
     hostname: postgres
     restart: no
     environment:
-      # DOCUMENTAÇÃO:
-      # Docker Hub → postgres → Environment Variables
       POSTGRES_USER: walletcoreuserdb  # Usuário padrão
       POSTGRES_PASSWORD: walletcore123 # Senha padrão
       POSTGRES_DB: walletcoredb        # Banco inicial criado automaticamente
@@ -81,7 +69,6 @@ services:
       - pgdata-logs:/var/log
     networks:
       banco:
-        ipv4_address: 172.28.1.11
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U app -d appdb"]
       interval: 10s
@@ -95,19 +82,16 @@ services:
     hostname: pgadmin
     restart: no
     environment:
-      # DOCUMENTAÇÃO:
-      # pgAdmin4 Documentation → Container Deployment
       PGADMIN_DEFAULT_EMAIL: admin@local.com   # Credencial de login
       PGADMIN_DEFAULT_PASSWORD: admin          # Senha de acesso
     ports:
-      - "15432:80"
+      - "1580:80"
     volumes:
       - pgadmin-data:/var/lib/pgadmin
       - pgadmin-conf:/pgadmin4/config_local.py
       - pgadmin-serverdefinitions:/pgadmin4/servers.json
     networks:
       banco:
-        ipv4_address: 172.28.1.12
     depends_on:
       - postgres
 
@@ -123,12 +107,27 @@ services:
       - "9090:9090"
     networks:
       monitoramento:
-        ipv4_address: 172.28.2.12
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://172.28.2.12:9090/-/ready || exit 1"]
+      test: ["CMD-SHELL", "wget -qO- http://prometheus:9090/-/ready || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
+  
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    container_name: keycloak
+    hostname: keycloak
+    restart: no
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - ./config/keycloak/realm.json:/opt/keycloak/data/import/realm.json:ro
+    command: start-dev --import-realm # start em modo dev e importa o realm
+    ports:
+      - "9091:8080"
+    networks:
+      security:
 
 volumes:
   kafka-data: {}
@@ -139,25 +138,8 @@ volumes:
   pgadmin-conf: {}
   pgadmin-serverdefinitions: {}
 
-# Redes segregadas conforme solicitado
 networks:
   messageBroker:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: "172.28.0.0/24"
-          gateway: "172.28.0.1"
-
   banco:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: "172.28.1.0/24"
-          gateway: "172.28.1.1"
-
   monitoramento:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: "172.28.2.0/24"
-          gateway: "172.28.2.1"
+  security:

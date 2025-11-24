@@ -18,6 +18,8 @@ WHITE='\033[1;37m'
 NC='\033[0m' # No Color
 clear
 
+docker compose stop
+
 echo -e "${BROWN_ORANGE}Removendo docker...${NC}"
 yes | docker compose rm -s -f -v &
 
@@ -33,11 +35,11 @@ read resposta
 if [[ "$resposta" == *"sim"* || "$resposta" == *"s"* ]]; then
     echo -e "${BROWN_ORANGE}Removendo volumes e network...${NC}"
     # Remove a pasta recursivamente
-    docker volume rm fc-eda-java_pgadmin-conf fc-eda-java_pgadmin-data fc-eda-java_pgadmin-serverdefinitions fc-eda-java_pgdata fc-eda-java_pgdata-conf fc-eda-java_pgdata-logs &
+    docker volume rm fc-eda-java_banco fc-eda-java_kafka-data fc-eda-java_pgadmin-conf fc-eda-java_pgadmin-data fc-eda-java_pgadmin-serverdefinitions fc-eda-java_pgdata fc-eda-java_pgdata-conf fc-eda-java_pgdata-logs  &
     wait $!
     yes | docker volume prune &
     wait $!
     docker volume ls
-    docker network rm fc-eda-java_banco fc-eda-java_messageBroker fc-eda-java_monitoramento
+    docker network rm fc-eda-java_banco fc-eda-java_messageBroker fc-eda-java_monitoramento fc-eda-java_security
     docker network ls
 fi

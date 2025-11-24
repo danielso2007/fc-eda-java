@@ -5,7 +5,8 @@
   "scripts": {
     "prepare": "husky",
     "commit": "cz",
-    "release": "standard-version"
+    "release": "standard-version",
+    "changelog": "standard-version --dry-run"
   },
   "repository": {
     "type": "git",
