@@ -1,6 +1,6 @@
 {
   "name": "fc-eda-java",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Projeto para estudo da arquitetura orientada a eventos.",
   "scripts": {
     "prepare": "husky",

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/danielso2007/fc-eda-java/compare/v0.1.1...v0.1.2) (2025-11-24)
+
+
+### Features
+
+* **entity:** as entidades da aplicação com mapeamento orm ([4ca57e5](https://github.com/danielso2007/fc-eda-java/commit/4ca57e565ae91db265021262803594e69f5eea81))
+* **event:** classe novas de evento do wallet ([310b54e](https://github.com/danielso2007/fc-eda-java/commit/310b54e8b4e30a953b21e1f8ce84f17e98212cd0))
+
 ### 0.1.1 (2025-11-24)
 
 
