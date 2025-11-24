@@ -12,7 +12,7 @@
 
 	<groupId>com.estudoeda</groupId>
 	<artifactId>walletcore</artifactId>
-	<version>0.1.1</version>
+	<version>0.1.2</version>
 	<name>walletcore</name>
 	<description>Projeto para estudo do EDA - Event Driven Architecture</description>
 
