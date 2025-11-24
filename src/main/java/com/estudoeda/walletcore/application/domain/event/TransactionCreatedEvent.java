@@ -3,15 +3,14 @@ package com.estudoeda.walletcore.application.domain.event;
 import java.time.Instant;
 import java.util.UUID;
 
-public record WalletEvent(
+public record TransactionCreatedEvent(
         UUID id,
-        String type,
+        String name,
         String payload,
         Instant occurredAt) {
+    public static final String TYPE_TRANSACTION_CREATE = "TRANSACTION_CREATE";
 
-    public static final String TYPE_CREATED_EVENT = "WALLET_CREATED";
-
-    public WalletEvent(String type, String payload) {
+    public TransactionCreatedEvent(String type, String payload) {
         this(UUID.randomUUID(), type, payload, Instant.now());
     }
 }

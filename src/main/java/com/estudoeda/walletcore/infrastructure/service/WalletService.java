@@ -17,7 +17,7 @@ public class WalletService implements WalletUserCase {
 
     @Override
     public void createWallet(String payload) {
-        WalletEvent ev = new WalletEvent(UUID.randomUUID(), WalletUserCase.TYPE_WALLET_EVENT, payload, Instant.now());
+        WalletEvent ev = new WalletEvent(UUID.randomUUID(), WalletEvent.TYPE_CREATED_EVENT, payload, Instant.now());
         publisher.publish(ev).join();
     }
 }
