@@ -1,7 +1,7 @@
 package com.estudoeda.walletcore.interfaces.controller;
 
 import org.springframework.http.ResponseEntity;
-import com.estudoeda.walletcore.application.domain.model.Wallet;
+import com.estudoeda.walletcore.application.domain.event.WalletEvent;
 import com.estudoeda.walletcore.interfaces.handlers.ProblemDetail;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,7 +27,7 @@ public interface WalletController {
     @Operation(summary = "Cadastra um Wallet.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = SUCESSO, description = "Wallet salvo com sucesso.",
-                content = { @Content(mediaType = CONTENT_TYPE_JSON, schema = @Schema(implementation = Wallet.class)) }),
+                content = { @Content(mediaType = CONTENT_TYPE_JSON, schema = @Schema(implementation = WalletEvent.class)) }),
         @ApiResponse(responseCode = BAD_REQUEST, description = INVALID_ID_SUPPLIED_MSG,
                 content = { @Content(mediaType = CONTENT_TYPE_JSON, schema = @Schema(implementation = ProblemDetail.class)) }),
         @ApiResponse(responseCode = NOT_FOUND, description = CURSO_NOT_FOUND_MSG,
