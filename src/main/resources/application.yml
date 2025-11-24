@@ -1,0 +1,81 @@
+server:
+  port: ${SPRING_API_PORT:3003}
+  address: 0.0.0.0
+logging:
+  level:
+    root: INFO
+    org:
+      springframework: INFO
+      ch:
+        qos:
+          logback: OFF
+spring:
+  profiles:
+    active: prd
+  application:
+    name: walletcore
+  datasource:
+    url: jdbc:postgresql://${DATABASE_IP:172.28.1.11}:${DATABASE_PORT:5432}/${DATABASE_SCHEMA:walletcoredb}
+    username: ${DATABASE_USER:walletcoreuserdb}
+    password: ${DATABASE_PASSWORD:walletcore123}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format:
+          sql: true
+  sql:
+    init:
+      platform: postgres
+      mode: always
+      continue-on-error: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://auth-server/.well-known/jwks.json
+h2:
+  console:
+  enabled: false
+  path: /h2-console
+
+kafka:
+  bootstrap-servers: ${KAFKA_URL:172.28.0.10}:${KAFKA_PORT:9092}
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+    use-global-registry: true
+    enable:
+      jvm: true
+    distribution:
+      slo:
+        http: '5ms,10ms,25ms,50ms,100ms,200ms,300ms,400ms,500ms,1s,2s,5s,10s,15s,20s,25s,30s'
+    tags:
+      application: '@project.name@'
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+info:
+  app:
+    name: '@project.name@'
+    description: '@project.description@'
+    version: '@project.version@'
+    encoding: '@project.build.sourceEncoding@'
+    java:
+      version: '@java.version@'
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui/index.html

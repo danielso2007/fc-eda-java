@@ -1,0 +1,41 @@
+server:
+  port: ${SPRING_API_PORT:3003}
+  address: 0.0.0.0
+logging:
+  level:
+    root: INFO
+    org:
+      springframework: INFO
+      ch:
+        qos:
+          logback: OFF
+spring:
+  application:
+    name: walletcore
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format:
+          sql: true
+
+  sql:
+    init:
+      platform: postgres
+      mode: always
+      continue-on-error: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://auth-server/.well-known/jwks.json
+
+kafka:
+  bootstrap-servers: ${KAFKA_URL:172.28.0.10}:${KAFKA_PORT:9092}
