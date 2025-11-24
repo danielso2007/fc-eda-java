@@ -4,6 +4,7 @@
   "description": "Projeto para estudo da arquitetura orientada a eventos.",
   "scripts": {
     "prepare": "husky",
+    "commit": "cz",
     "release": "standard-version"
   },
   "repository": {
@@ -19,7 +20,16 @@
   },
   "homepage": "https://github.com/danielso2007/fc-eda-java#readme",
   "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
     "standard-version": "^9.5.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

@@ -24,7 +24,22 @@ As configurações já estão no `package.json`, basta rodar os comandos:
 
 - Preparar o husky no início do projeto: `npm run prepare`.
 
-Agora, os commits seguirão o template do Hasky.
+### Commints
+
+Para integrar o git-cz ao seu projeto Spring Boot, você precisa de três passos principais: instalação, configuração do adaptador (a estrutura de prompt) e a execução via script npm. A instalação basta executar `npm i`. A configuração já está feita.
+
+Agora, em vez de rodar git commit, seus devs rodarão: `npm run commit`.
+
+Isso iniciará o prompt interativo, que guiará você passo a passo:
+1. Select the type of change: (feat, fix, chore, etc.)
+2. Scope (opcional): (core, api, db, etc.)
+3. Subject (título conciso).
+4. Body (detalhes do corpo, opcional).
+5. Breaking Change (se for uma mudança que quebra compatibilidade).
+6. Issue reference (referência a issues).
+
+O git-cz constrói a mensagem final no formato correto (feat(core): implementa validacao de CPF) e, em seguida, executa o git commit.
+
 
 ## Ciclo de Release no Java/Maven
 
