@@ -1,0 +1,163 @@
+version: "3.9"
+
+services:
+
+  # Kafka em modo KRaft (broker + controller).
+  kafka:
+    image: confluentinc/cp-kafka:8.1.0
+    container_name: kafka
+    hostname: kafka
+    restart: no
+    environment:
+      # DOCUMENTAÇÃO:
+      # Confluent Kafka Environment Variables:
+      # "Confluent Platform → cp-kafka → Configuration Reference"
+      KAFKA_PROCESS_ROLES: broker,controller        # Define os papéis no modo KRaft
+      KAFKA_NODE_ID: 1                              # ID único do nó no cluster KRaft
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093" # Nó responsável pelo quorum KRaft
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092 # Endereço divulgado para clientes
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1     # Replicação mínima (dev)
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    networks:
+      messageBroker:
+        ipv4_address: 172.28.0.10
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/172.28.0.10/9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # Kafka UI – interface gráfica para visualizar tópicos, mensagens e consumidores.
+  kafka-ui:
+    image: provectuslabs/kafka-ui:v0.7.2
+    container_name: kafka-ui
+    hostname: kafka-ui
+    restart: no
+    environment:
+      # DOCUMENTAÇÃO:
+      # Kafka UI → Configuration
+      KAFKA_CLUSTERS_0_NAME: "local-kafka"          # Nome do cluster exibido no UI
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:9092" # Bootstrap para conexão com Kafka
+      KAFKA_CLUSTERS_0_ZOOKEEPER: ""               # Vazio pois usamos KRaft (sem ZK)
+      SERVER_PORT: "8080"                          # Porta interna do serviço
+    ports:
+      - "8080:8080"
+    networks:
+      messageBroker:
+        ipv4_address: 172.28.0.20
+    depends_on:
+      - kafka
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://172.28.0.20:8080/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL – banco relacional principal.
+  postgres:
+    image: postgres:17.4-alpine3.21
+    container_name: postgres
+    hostname: postgres
+    restart: no
+    environment:
+      # DOCUMENTAÇÃO:
+      # Docker Hub → postgres → Environment Variables
+      POSTGRES_USER: walletcoreuserdb  # Usuário padrão
+      POSTGRES_PASSWORD: walletcore123 # Senha padrão
+      POSTGRES_DB: walletcoredb        # Banco inicial criado automaticamente
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - pgdata-conf:/etc/postgresql
+      - pgdata-logs:/var/log
+    networks:
+      banco:
+        ipv4_address: 172.28.1.11
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d appdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # pgAdmin4 – interface web de administração do PostgreSQL.
+  pgadmin:
+    image: dpage/pgadmin4:9.1.0
+    container_name: pgadmin
+    hostname: pgadmin
+    restart: no
+    environment:
+      # DOCUMENTAÇÃO:
+      # pgAdmin4 Documentation → Container Deployment
+      PGADMIN_DEFAULT_EMAIL: admin@local.com   # Credencial de login
+      PGADMIN_DEFAULT_PASSWORD: admin          # Senha de acesso
+    ports:
+      - "15432:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+      - pgadmin-conf:/pgadmin4/config_local.py
+      - pgadmin-serverdefinitions:/pgadmin4/servers.json
+    networks:
+      banco:
+        ipv4_address: 172.28.1.12
+    depends_on:
+      - postgres
+
+  # Prometheus – responsável pelo scraping de métricas.
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: prometheus
+    hostname: prometheus
+    restart: no
+    volumes:
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    networks:
+      monitoramento:
+        ipv4_address: 172.28.2.12
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://172.28.2.12:9090/-/ready || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  kafka-data: {}
+  pgdata: {}
+  pgdata-conf: {}
+  pgdata-logs: {}
+  pgadmin-data: {}
+  pgadmin-conf: {}
+  pgadmin-serverdefinitions: {}
+
+# Redes segregadas conforme solicitado
+networks:
+  messageBroker:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.28.0.0/24"
+          gateway: "172.28.0.1"
+
+  banco:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.28.1.0/24"
+          gateway: "172.28.1.1"
+
+  monitoramento:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.28.2.0/24"
+          gateway: "172.28.2.1"
