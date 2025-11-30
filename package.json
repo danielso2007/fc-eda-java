@@ -7,7 +7,7 @@
     "commit": "cz",
     "release": "standard-version",
     "changelog": "standard-version --dry-run",
-    "postrelease": "mvn versions:set -DnewVersion=$(node -p \"require('./package.json').version\") -DgenerateBackupPoms=false"
+    "postrelease": "mvn versions:set -DnewVersion=$(node -p \"require('./package.json').version\") -DgenerateBackupPoms=false && git add pom.xml && git commit --amend --no-edit && git tag -f v$(node -p \"require('./package.json').version\")"
   },
   "repository": {
     "type": "git",
