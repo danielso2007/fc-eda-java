@@ -10,14 +10,6 @@ All notable changes to this project will be documented in this file. See [standa
 * finalizado toda a implementação de crud e transferência de saldo ([207035f](https://github.com/danielso2007/fc-eda-java/commit/207035f25112140229527b1971c757fa19b5299d))
 * removendo classe do mapper do PMD ([348270b](https://github.com/danielso2007/fc-eda-java/commit/348270b362d414935b3ad7dfe20a7c436d286cc1))
 
-### [0.1.3](https://github.com/danielso2007/fc-eda-java/compare/v0.1.2...v0.1.3) (2025-11-30)
-
-
-### Features
-
-* finalizado toda a implementação de crud e transferência de saldo ([207035f](https://github.com/danielso2007/fc-eda-java/commit/207035f25112140229527b1971c757fa19b5299d))
-* removendo classe do mapper do PMD ([348270b](https://github.com/danielso2007/fc-eda-java/commit/348270b362d414935b3ad7dfe20a7c436d286cc1))
-
 ### [0.1.2](https://github.com/danielso2007/fc-eda-java/compare/v0.1.1...v0.1.2) (2025-11-24)
 
 
