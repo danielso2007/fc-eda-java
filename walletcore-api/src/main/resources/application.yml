@@ -3,7 +3,7 @@ api:
   version: v1
 
 server:
-  port: ${SPRING_API_PORT:3002}
+  port: ${SPRING_API_PORT:8080}
   address: 0.0.0.0
   servlet:
     context-path: /${spring.application.name}/${api.prefix}/${api.version}
@@ -121,8 +121,8 @@ info:
       version: '@java.version@'
     title: Wallet
     url:
-      dev: http://localhost:${server.port}/${spring.application.name}/${api.prefix}/${api.version}
-      prd: http://localhost:${server.port}/${spring.application.name}/${api.prefix}/${api.version}
+      dev: http://localhost:${DOCKER_PORT_APP:8080}/${spring.application.name}/${api.prefix}/${api.version}
+      prd: http://localhost:${DOCKER_PORT_APP:8080}/${spring.application.name}/${api.prefix}/${api.version}
       git: https://github.com/danielso2007/fc-eda-java
     contact:
       name: Daniel Oliveira

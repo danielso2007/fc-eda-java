@@ -2,6 +2,20 @@
 
 Projeto para estudo da arquitetura orientada a eventos.
 
+# Executando o projeto
+
+Para executar o projeto e testar, siga os passos:
+
+- Execute o shell `build-and-up.sh`:
+  - Esse script subirá os containers docker.
+  - As APIs serão compiladas dentro do container.
+  - Depois os outros container irão subir.
+- As APIs já executam um script básico para popular o banco.
+- Temos o [PgAdmin4](http://localhost:1580/login) para acessar o banco visualmente.
+- Também é possível ver informação do Kafka acessando [UI for Apache Kafka](http://localhost:8092/).
+- Para fazer uma transação, acesse o [Swagger da aplicação walletcore](http://localhost:3002/walletcore/api/v1/swagger-ui/index.html).
+- Após realizar a transação, verifique pelo accountId o balanço na [Swagger da aplicação balances](http://localhost:3003/balances/api/v1/swagger-ui/index.html).
+
 ## Principais endereços
 
 Para acessar os containers:
@@ -17,7 +31,7 @@ Para acessar os containers:
 - Swagger da aplicação walletcore
   - [http://localhost:3002/walletcore/api/v1/swagger-ui/index.html](http://localhost:3002/walletcore/api/v1/swagger-ui/index.html)
 - Swagger da aplicação balances
-  - [http://localhost:3003/balances/api/v1/swagger-ui/index.html](http://localhost:3003/balances/api/v1/swagger-ui/index.html)  
+  - [http://localhost:3003/balances/api/v1/swagger-ui/index.html](http://localhost:3003/balances/api/v1/swagger-ui/index.html)
 
 ---
 

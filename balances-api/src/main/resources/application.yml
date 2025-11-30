@@ -3,7 +3,7 @@ api:
   version: v1
 
 server:
-  port: ${SPRING_API_PORT:3003}
+  port: ${SPRING_API_PORT:8080}
   address: 0.0.0.0
   servlet:
     context-path: /${spring.application.name}/${api.prefix}/${api.version}
@@ -76,7 +76,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8080/realms/wallet-realm
+          jwk-set-uri: ${OAUTH2_URL:http://localhost:8080/realms/wallet-realm}
   kafka:
     consumer:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer 
@@ -134,8 +134,8 @@ info:
       version: '@java.version@'
     title: Balances
     url:
-      dev: http://localhost:${server.port}/${spring.application.name}/${api.prefix}/${api.version}
-      prd: http://localhost:${server.port}/${spring.application.name}/${api.prefix}/${api.version}
+      dev: http://localhost:${DOCKER_PORT_APP:8080}/${spring.application.name}/${api.prefix}/${api.version}
+      prd: http://localhost:${DOCKER_PORT_APP:8080}/${spring.application.name}/${api.prefix}/${api.version}
       git: https://github.com/danielso2007/fc-eda-java
     contact:
       name: Daniel Oliveira
