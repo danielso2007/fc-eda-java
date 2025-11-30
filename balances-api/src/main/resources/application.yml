@@ -1,0 +1,149 @@
+api:
+  prefix: api
+  version: v1
+
+server:
+  port: ${SPRING_API_PORT:3003}
+  address: 0.0.0.0
+  servlet:
+    context-path: /${spring.application.name}/${api.prefix}/${api.version}
+
+logging:
+  level:
+    root: INFO
+    com:
+      zaxxer:
+        hikari: WARN
+    org:
+      springframework: INFO
+      boot:
+          tomcat:
+            TomcatWebServer: WARN
+      data:
+        repository:
+          config: WARN
+      kafka: WARN
+      apache:
+        catalina: WARN
+        kafka:
+          clients:
+            consumer: WARN
+          common:
+            config: WARN
+      ch:
+        qos:
+          logback: OFF
+      hibernate:
+        SQL: WARN
+        type:
+          descriptor:
+            sql: WARN
+        orm:
+          connections:
+            pooling: error
+        engine:
+          transaction:
+            jta:
+              platform:
+                internal:
+                  JtaPlatformInitiator: WARN
+
+spring:
+  profiles:
+    active: prd
+  application:
+    name: balances
+  datasource:
+    url: jdbc:postgresql://${DATABASE_IP:localhost}:${DATABASE_PORT:5432}/${DATABASE_SCHEMA:balancesdb}
+    username: ${DATABASE_USER:walletcoreuserdb}
+    password: ${DATABASE_PASSWORD:walletcore123}
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format:
+          sql: false
+  sql:
+    init:
+      platform: postgres
+      mode: always
+      continue-on-error: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/wallet-realm
+  kafka:
+    consumer:
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer 
+      properties:
+        spring:
+          json:
+            use:
+              type:
+                headers: false
+            value:
+              default:
+                type: com.estudoeda.walletcore.application.domain.event.BalanceUpdatedWalletEvent 
+
+management:
+  httpexchanges:
+    recording:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+    use-global-registry: true
+    enable:
+      jvm: true
+    distribution:
+      slo:
+        http: '5ms,10ms,25ms,50ms,100ms,200ms,300ms,400ms,500ms,1s,2s,5s,10s,15s,20s,25s,30s'
+    tags:
+      application: '@project.name@'
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+kafka:
+  bootstrap:
+    servers: ${KAFKA_URL:localhost}:${KAFKA_PORT:9092}
+  topic: walletcore.events
+  group:
+    id:
+      config: ${KAFKA_GROUP_ID_CONFIG:walletcore-group}
+
+info:
+  app:
+    name: ${spring.application.name}
+    path: ${server.servlet.context-path}
+    description: '@project.description@'
+    version: '@project.version@'
+    encoding: '@project.build.sourceEncoding@'
+    java:
+      version: '@java.version@'
+    title: Balances
+    url:
+      dev: http://localhost:${server.port}/${spring.application.name}/${api.prefix}/${api.version}
+      prd: http://localhost:${server.port}/${spring.application.name}/${api.prefix}/${api.version}
+      git: https://github.com/danielso2007/fc-eda-java
+    contact:
+      name: Daniel Oliveira
+      email: danielso2007@gmail.com
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+  auto-tag-classes: false

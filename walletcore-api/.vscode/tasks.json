@@ -1,0 +1,77 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "1. ⚙️ Build: Compilar Java",
+            "type": "shell",
+            "command": "mvn",
+            "args": [
+                "clean package -DskipTests=true"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$maven"
+        },
+        {
+            "label": "2. 🚀 Run: Spring Boot",
+            "type": "shell",
+            "command": "mvn",
+            "args": [
+                "spring-boot:run"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "3. 🛡️ Quality: PMD Report",
+            "type": "shell",
+            "command": "mvn",
+            "args": [
+                "pmd:check"
+            ],
+            "group": "none",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$maven",
+            "detail": "Gera o relatório PMD em target/site/pmd.html"
+        },
+        {
+            "label": "4. 📐 Quality: Checkstyle Report",
+            "type": "shell",
+            "command": "mvn",
+            "args": [
+                "checkstyle:check"
+            ],
+            "group": "none",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$maven",
+            "detail": "Gera o relatório Checkstyle em target/site/checkstyle.html"
+        },
+        {
+            "label": "5. 🧪 Coverage: JaCoCo Report",
+            "type": "shell",
+            "command": "mvn",
+            "args": [
+                "clean",
+                "verify"
+            ],
+            "group": "none",
+            "presentation": {
+                "reveal": "always"
+            },
+            "problemMatcher": "$maven",
+            "detail": "Executa testes e gera o relatório JaCoCo em target/site/jacoco/index.html"
+        }
+    ]
+}

@@ -14,8 +14,10 @@ Para acessar os containers:
   - [http://localhost:9090/](http://localhost:9090/)
 - keycloak
   - [http://localhost:9091/](http://localhost:9091/)
-- Swagger da aplicação
-  - [http://localhost:3003/walletcore/api/v1/swagger-ui/swagger-ui/index.html](http://localhost:3003/walletcore/api/v1/swagger-ui/swagger-ui/index.html)
+- Swagger da aplicação walletcore
+  - [http://localhost:3002/walletcore/api/v1/swagger-ui/index.html](http://localhost:3002/walletcore/api/v1/swagger-ui/index.html)
+- Swagger da aplicação balances
+  - [http://localhost:3003/balances/api/v1/swagger-ui/index.html](http://localhost:3003/balances/api/v1/swagger-ui/index.html)  
 
 ---
 
