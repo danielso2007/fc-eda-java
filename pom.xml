@@ -226,6 +226,9 @@
 				<artifactId>maven-pmd-plugin</artifactId>
 				<version>3.26.0</version>
 				<configuration>
+					<excludes>
+						<exclude>**/*MapperImpl.java</exclude>
+					</excludes>
 					<!-- enable incremental analysis -->
 					<analysisCache>true</analysisCache>
 					<!-- analysisCacheLocation: optional - points to the following location by
