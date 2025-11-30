@@ -77,7 +77,7 @@ services:
 
   # pgAdmin4 – interface web de administração do PostgreSQL.
   pgadmin:
-    image: dpage/pgadmin4:9.1.0
+    image: dpage/pgadmin4:9.10.0
     container_name: pgadmin
     hostname: pgadmin
     restart: no

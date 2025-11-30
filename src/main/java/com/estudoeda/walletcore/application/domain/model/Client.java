@@ -2,7 +2,6 @@ package com.estudoeda.walletcore.application.domain.model;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -24,8 +23,11 @@ public class Client {
     protected Client() {
     }
 
+    public Client(UUID id) {
+        this.id = id;
+    }
+
     private Client(String name, String email) {
-        this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
         this.accounts = new ArrayList<>();
@@ -38,10 +40,10 @@ public class Client {
 
     private final void validate() {
         if (Objects.isNull(this.name) || this.name.isBlank()) {
-            throw new IllegalArgumentException("name is required");
+            throw new IllegalArgumentException("Name is required");
         }
         if (Objects.isNull(this.email) || this.email.isBlank()) {
-            throw new IllegalArgumentException("email is required");
+            throw new IllegalArgumentException("Email is required");
         }
     }
 
@@ -51,34 +53,52 @@ public class Client {
         validate();
     }
 
-    public void addAccount(Account account) {
-        if (!account.getClientId().equals(this.id)) {
-            throw new IllegalArgumentException("account does not belong to client");
-        }
-        this.accounts.add(account);
-    }
-
     public UUID getId() {
         return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getEmail() {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public List<Account> getAccounts() {
-        return Collections.unmodifiableList(accounts);
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 
     public Instant getCreatedAt() {
         return createdAt;
     }
 
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public Instant getUpdatedAt() {
         return updatedAt;
     }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 }

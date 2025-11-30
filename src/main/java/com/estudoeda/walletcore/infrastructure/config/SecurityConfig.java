@@ -33,8 +33,8 @@ public class SecurityConfig {
                     "/swagger-ui.html")
                 .permitAll()
                 .requestMatchers("/actuator/**").permitAll()
-                .requestMatchers("/api/**").permitAll()
-                .requestMatchers("/v1/**").authenticated()
+                .requestMatchers("/**").permitAll()
+                // .requestMatchers("/v1/**").authenticated()
                 .anyRequest().authenticated())
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 

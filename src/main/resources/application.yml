@@ -1,20 +1,52 @@
+api:
+  prefix: api
+  version: v1
+
 server:
   port: ${SPRING_API_PORT:3003}
   address: 0.0.0.0
+  servlet:
+    context-path: /${spring.application.name}/${api.prefix}/${api.version}
 
 logging:
   level:
     root: INFO
+    com:
+      zaxxer:
+        hikari: WARN
     org:
-      springframework: warn
+      springframework: INFO
+      boot:
+          tomcat:
+            TomcatWebServer: WARN
+      data:
+        repository:
+          config: WARN
+      kafka: WARN
+      apache:
+        catalina: WARN
+        kafka:
+          clients:
+            consumer: WARN
+          common:
+            config: WARN
       ch:
         qos:
           logback: OFF
       hibernate:
-        SQL: warn
+        SQL: WARN
+        type:
+          descriptor:
+            sql: WARN
         orm:
           connections:
             pooling: error
+        engine:
+          transaction:
+            jta:
+              platform:
+                internal:
+                  JtaPlatformInitiator: WARN
 
 spring:
   profiles:
@@ -26,14 +58,15 @@ spring:
     username: ${DATABASE_USER:walletcoreuserdb}
     password: ${DATABASE_PASSWORD:walletcore123}
   jpa:
+    defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create-drop
-    show-sql: true
+      ddl-auto: create
+    show-sql: false
     open-in-view: false
     properties:
       hibernate:
         format:
-          sql: true
+          sql: false
   sql:
     init:
       platform: postgres
@@ -79,7 +112,8 @@ kafka:
       config: ${KAFKA_GROUP_ID_CONFIG:walletcore-group}
 info:
   app:
-    name: '@project.name@'
+    name: ${spring.application.name}
+    path: ${server.servlet.context-path}
     description: '@project.description@'
     version: '@project.version@'
     encoding: '@project.build.sourceEncoding@'
@@ -87,8 +121,8 @@ info:
       version: '@java.version@'
     title: Wallet
     url:
-      dev: http://localhost:3003
-      prd: http://localhost:3003
+      dev: http://localhost:3003/${spring.application.name}/${api.prefix}/${api.version}
+      prd: http://localhost:3003/${spring.application.name}/${api.prefix}/${api.version}
       git: https://github.com/danielso2007/fc-eda-java
     contact:
       name: Daniel Oliveira
@@ -97,6 +131,8 @@ info:
 springdoc:
   api-docs:
     path: /v3/api-docs
+    enabled: true
   swagger-ui:
     path: /swagger-ui/index.html
+    enabled: true
   auto-tag-classes: false

@@ -7,21 +7,37 @@ Projeto para estudo da arquitetura orientada a eventos.
 Para acessar os containers:
 
 - PgAdmin4
-  - http://localhost:1580/login
+  - [http://localhost:1580/login](http://localhost:1580/login)
 - UI for Apache Kafka
-  - http://localhost:8092/
+  - [http://localhost:8092/](http://localhost:8092/)
 - Prometheus
-  - http://localhost:9090/
+  - [http://localhost:9090/](http://localhost:9090/)
 - keycloak
-  - http://localhost:9091/
+  - [http://localhost:9091/](http://localhost:9091/)
 - Swagger da aplicação
-  - http://localhost:3003/swagger-ui/swagger-ui/index.html#/
+  - [http://localhost:3003/walletcore/api/v1/swagger-ui/swagger-ui/index.html](http://localhost:3003/walletcore/api/v1/swagger-ui/swagger-ui/index.html)
 
 ---
 
 Conteúdo abaixo é para o desensolvedor
 
 # Para uso no desenvolvimento
+
+## Acessando o Postgres via PgAdmin4
+
+Acesse p link: [http://localhost:1580/login](http://localhost:1580/login)
+
+Configurar acesso ao servidor:
+
+![alt text](doc/db-01.png)
+
+Adicione as configurações, as mesmas que estão no docker-compose. Aqui, no docker, o host do postgresql é `postgres`. Login e senha estão no docker-compose.
+
+![alt text](doc/db-02.png)
+
+Após isso, temos acesso ao banco:
+
+![alt text](doc/db-03.png)
 
 ## keycloak
 
