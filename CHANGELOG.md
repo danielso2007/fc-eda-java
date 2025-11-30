@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/danielso2007/fc-eda-java/compare/v0.1.3...v0.1.4) (2025-11-30)
+
+
+### Features
+
+* **balances:** todo o projeto entregue produzindo e consumindo da fila Kafka ([b5fa5b5](https://github.com/danielso2007/fc-eda-java/commit/b5fa5b55901506c892287a39326e47cf4e849ac0))
+
+
+### Bug Fixes
+
+* correção do changelog da aplicação ([718fd1f](https://github.com/danielso2007/fc-eda-java/commit/718fd1f6a867b173f3e6826a98bbcc54b7adb6f3))
+
 ### [0.1.3](https://github.com/danielso2007/fc-eda-java/compare/v0.1.2...v0.1.3) (2025-11-30)
 
 
