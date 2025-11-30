@@ -1,0 +1,7 @@
+@baseUrl = http://localhost:3003/balances/api/v1
+
+### Lista por accountId
+GET {{baseUrl}}/balances/c1d2e3f4-9999-aaaa-bbbb-000000000009
+
+### Lista de transações
+GET {{baseUrl}}/balances?page=0&size=10&sort=createdAt%2CASC
