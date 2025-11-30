@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/danielso2007/fc-eda-java/compare/v0.1.4...v0.2.0) (2025-11-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* **final:** entrega do projeto com docker completo e script de execução
+
+### Features
+
+* **final:** criado o dockerfile das aplicações e script para execução única ([2470ef2](https://github.com/danielso2007/fc-eda-java/commit/2470ef2b373b632e2e973fa1b49993b41e621a80))
+
+### [0.1.4](https://github.com/danielso2007/fc-eda-java/compare/v0.1.3...v0.1.4) (2025-11-30)
+
+
+### Features
+
+* **balances:** todo o projeto entregue produzindo e consumindo da fila Kafka ([b5fa5b5](https://github.com/danielso2007/fc-eda-java/commit/b5fa5b55901506c892287a39326e47cf4e849ac0))
+
+
+### Bug Fixes
+
+* correção do changelog da aplicação ([718fd1f](https://github.com/danielso2007/fc-eda-java/commit/718fd1f6a867b173f3e6826a98bbcc54b7adb6f3))
+
+### [0.1.3](https://github.com/danielso2007/fc-eda-java/compare/v0.1.2...v0.1.3) (2025-11-30)
+
+
+### Features
+
+* finalizado toda a implementação de crud e transferência de saldo ([207035f](https://github.com/danielso2007/fc-eda-java/commit/207035f25112140229527b1971c757fa19b5299d))
+* removendo classe do mapper do PMD ([348270b](https://github.com/danielso2007/fc-eda-java/commit/348270b362d414935b3ad7dfe20a7c436d286cc1))
+
 ### [0.1.2](https://github.com/danielso2007/fc-eda-java/compare/v0.1.1...v0.1.2) (2025-11-24)
 
 

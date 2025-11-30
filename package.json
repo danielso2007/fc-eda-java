@@ -1,12 +1,14 @@
 {
   "name": "fc-eda-java",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Projeto para estudo da arquitetura orientada a eventos.",
   "scripts": {
     "prepare": "husky",
     "commit": "cz",
     "release": "standard-version",
-    "changelog": "standard-version --dry-run"
+    "changelog": "standard-version --dry-run",
+    "postrelease": "mvn versions:set -DnewVersion=$(node -p \"require('./package.json').version\") -DgenerateBackupPoms=false && git add pom.xml && git commit --amend --no-edit && git tag -f v$(node -p \"require('./package.json').version\")",
+    "release:push": "git push --follow-tags origin developer"
   },
   "repository": {
     "type": "git",

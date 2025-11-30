@@ -10,7 +10,7 @@ services:
       KAFKA_NODE_ID: 1                              # ID único do nó no cluster KRaft
       KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093" # Nó responsável pelo quorum KRaft
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092 # Endereço divulgado para clientes
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092 # Endereço divulgado para clientes - Quando usar sua aplicação local, mude para localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1     # Replicação mínima (dev)
@@ -60,13 +60,14 @@ services:
     environment:
       POSTGRES_USER: walletcoreuserdb  # Usuário padrão
       POSTGRES_PASSWORD: walletcore123 # Senha padrão
-      POSTGRES_DB: walletcoredb        # Banco inicial criado automaticamente
+      POSTGRES_MULTIPLE_DATABASES: walletcoredb,balancesdb
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - pgdata-conf:/etc/postgresql
       - pgdata-logs:/var/log
+      - ./config/postgres/create-multiple-postgresql-databases.sh:/docker-entrypoint-initdb.d/init.sh
     networks:
       banco:
     healthcheck:
@@ -77,7 +78,7 @@ services:
 
   # pgAdmin4 – interface web de administração do PostgreSQL.
   pgadmin:
-    image: dpage/pgadmin4:9.1.0
+    image: dpage/pgadmin4:9.10.0
     container_name: pgadmin
     hostname: pgadmin
     restart: no
@@ -128,6 +129,80 @@ services:
       - "9091:8080"
     networks:
       security:
+
+  balances-api:
+    build:
+      context: ./balances-api
+      dockerfile: Dockerfile
+    container_name: balances-api
+    ports:
+      - "3003:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_API_PORT: 8080
+      DATABASE_IP: postgres
+      DATABASE_PORT: 5432
+      DATABASE_SCHEMA: balancesdb
+      DATABASE_USER: walletcoreuserdb
+      DATABASE_PASSWORD: walletcore123
+      OAUTH2_URL: http://keycloak:8080/realms/wallet-realm
+      KAFKA_URL: kafka
+      KAFKA_PORT: 9092
+      KAFKA_GROUP_ID_CONFIG: walletcore-group
+      JAVA_TOOL_OPTIONS: -Xms512m -Xmx1024m -XX:+UseG1GC
+      DOCKER_PORT_APP: 3003
+    depends_on:
+      - kafka
+      - postgres
+      - prometheus
+      - keycloak
+    healthcheck:
+      test: ["CMD","/bin/sh","-c","curl -f http://localhost:8080/balances/api/v1/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      security:
+      messageBroker:
+      monitoramento:
+      banco:
+
+  walletcore-api:
+    build:
+      context: ./walletcore-api
+      dockerfile: Dockerfile
+    container_name: walletcore-api
+    ports:
+      - "3002:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_API_PORT: 8080
+      DATABASE_IP: postgres
+      DATABASE_PORT: 5432
+      DATABASE_SCHEMA: walletcoredb
+      DATABASE_USER: walletcoreuserdb
+      DATABASE_PASSWORD: walletcore123
+      OAUTH2_URL: http://keycloak:8080/realms/wallet-realm
+      KAFKA_URL: kafka
+      KAFKA_PORT: 9092
+      KAFKA_GROUP_ID_CONFIG: walletcore-group
+      JAVA_TOOL_OPTIONS: -Xms512m -Xmx1024m -XX:+UseG1GC
+      DOCKER_PORT_APP: 3002
+    depends_on:
+      - kafka
+      - postgres
+      - prometheus
+      - keycloak
+    healthcheck:
+      test: ["CMD","/bin/sh","-c","curl -f http://localhost:8080/walletcore/api/v1/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      security:
+      messageBroker:
+      monitoramento:
+      banco:
 
 volumes:
   kafka-data: {}
