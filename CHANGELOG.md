@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/danielso2007/fc-eda-java/compare/v0.1.4...v0.2.0) (2025-11-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* **final:** entrega do projeto com docker completo e script de execução
+
+### Features
+
+* **final:** criado o dockerfile das aplicações e script para execução única ([2470ef2](https://github.com/danielso2007/fc-eda-java/commit/2470ef2b373b632e2e973fa1b49993b41e621a80))
+
 ### [0.1.4](https://github.com/danielso2007/fc-eda-java/compare/v0.1.3...v0.1.4) (2025-11-30)
 
 
