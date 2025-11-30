@@ -1,0 +1,42 @@
+@baseUrl = http://localhost:3002/walletcore/api/v1
+
+### Lista de contas
+GET {{baseUrl}}/accounts?page=0&size=10&sort=clientId%2CASC
+
+###
+
+### Lista de clientes
+GET {{baseUrl}}/clients?page=0&size=10&sort=name%2CASC
+
+###
+
+### Cadastrar cliente
+POST {{baseUrl}}/clients
+Content-Type: application/json
+
+{
+  "email": "joao.silva@example.com",
+  "name": "João da Silva"
+}
+
+###
+
+### Cadastrar conta
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+  "clientId": "0f7a3c71-9236-4cf0-b476-0ab92d7cfba0"
+}
+
+###
+
+### Realizar transação
+POST {{baseUrl}}/transactions
+Content-Type: application/json
+
+{
+  "accountFromId": "c1d2e3f4-9999-aaaa-bbbb-000000000009",
+  "accountToId": "c1d2e3f4-0000-cccc-dddd-000000000010",
+  "amount": 80.90
+}
