@@ -16,6 +16,14 @@ Para executar o projeto e testar, siga os passos:
 - Para fazer uma transação, acesse o [Swagger da aplicação walletcore](http://localhost:3002/walletcore/api/v1/swagger-ui/index.html).
 - Após realizar a transação, verifique pelo accountId o balanço na [Swagger da aplicação balances](http://localhost:3003/balances/api/v1/swagger-ui/index.html).
 
+## Testando com o REST Client
+
+Usando o plugin do vscode REST Client, temos dois arquivos para chamadas REST para teste da aplicação.
+
+- ./REST Client/walletcore.http
+- ./REST Client/balances.http
+
+
 ## Principais endereços
 
 Para acessar os containers:
@@ -33,6 +41,9 @@ Para acessar os containers:
 - Swagger da aplicação balances
   - [http://localhost:3003/balances/api/v1/swagger-ui/index.html](http://localhost:3003/balances/api/v1/swagger-ui/index.html)
 
+---
+---
+---
 ---
 
 Conteúdo abaixo é para o desensolvedor
