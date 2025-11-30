@@ -2,26 +2,58 @@
 
 Projeto para estudo da arquitetura orientada a eventos.
 
+# Executando o projeto
+
+Para executar o projeto e testar, siga os passos:
+
+- Execute o shell `build-and-up.sh`:
+  - Esse script subirá os containers docker.
+  - As APIs serão compiladas dentro do container.
+  - Depois os outros container irão subir.
+- As APIs já executam um script básico para popular o banco.
+- Temos o [PgAdmin4](http://localhost:1580/login) para acessar o banco visualmente.
+- Também é possível ver informação do Kafka acessando [UI for Apache Kafka](http://localhost:8092/).
+- Para fazer uma transação, acesse o [Swagger da aplicação walletcore](http://localhost:3002/walletcore/api/v1/swagger-ui/index.html).
+- Após realizar a transação, verifique pelo accountId o balanço na [Swagger da aplicação balances](http://localhost:3003/balances/api/v1/swagger-ui/index.html).
+
 ## Principais endereços
 
 Para acessar os containers:
 
 - PgAdmin4
-  - http://localhost:1580/login
+  - [http://localhost:1580/login](http://localhost:1580/login)
 - UI for Apache Kafka
-  - http://localhost:8092/
+  - [http://localhost:8092/](http://localhost:8092/)
 - Prometheus
-  - http://localhost:9090/
+  - [http://localhost:9090/](http://localhost:9090/)
 - keycloak
-  - http://localhost:9091/
-- Swagger da aplicação
-  - http://localhost:3003/swagger-ui/swagger-ui/index.html#/
+  - [http://localhost:9091/](http://localhost:9091/)
+- Swagger da aplicação walletcore
+  - [http://localhost:3002/walletcore/api/v1/swagger-ui/index.html](http://localhost:3002/walletcore/api/v1/swagger-ui/index.html)
+- Swagger da aplicação balances
+  - [http://localhost:3003/balances/api/v1/swagger-ui/index.html](http://localhost:3003/balances/api/v1/swagger-ui/index.html)
 
 ---
 
 Conteúdo abaixo é para o desensolvedor
 
 # Para uso no desenvolvimento
+
+## Acessando o Postgres via PgAdmin4
+
+Acesse p link: [http://localhost:1580/login](http://localhost:1580/login)
+
+Configurar acesso ao servidor:
+
+![alt text](doc/db-01.png)
+
+Adicione as configurações, as mesmas que estão no docker-compose. Aqui, no docker, o host do postgresql é `postgres`. Login e senha estão no docker-compose.
+
+![alt text](doc/db-02.png)
+
+Após isso, temos acesso ao banco:
+
+![alt text](doc/db-03.png)
 
 ## keycloak
 
